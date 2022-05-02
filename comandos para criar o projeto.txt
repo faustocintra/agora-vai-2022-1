@@ -1,0 +1,7 @@
+npx create-react-app . --use-npm
+npm start
+se abrir a web cm o logotipo girando ent ok
+local host 3000
+
+npm install @mui/material @emotion/react @emotion/styled instalação dos packs 
+npm install @mui/icons-material pacote de icones
