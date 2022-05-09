@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import AppBar from '@mui/material/AppBar';
 import { makeStyles } from '@mui/styles';
+import LocalCafeIcon from '@mui/icons-material/LocalCafe';
 
 const useStyles = makeStyles(theme => ({
     box:{
@@ -17,6 +18,13 @@ const useStyles = makeStyles(theme => ({
     typog: {
       textAlign: 'center',
       width: '100%'
+    },
+    link: {
+      color: theme.palette.secondary.main,
+      textDecoration: 'none',
+      '&:hover': {  // Mouse sobre o link
+        textDecoration: 'underline'
+      }
     }
 }));
 
@@ -27,7 +35,8 @@ export default function AppFooter() {
         <AppBar position="static" component="footer"> 
           <Toolbar variant="dense" className={classes.toolbar}>
               <Typography variant="caption" className={classes.typog}>
-                Desenvolvido com café por <a href="mailto:professor@faustocintra.com.br">Prof. Fausto G. Cintra</a>
+                Desenvolvido com <LocalCafeIcon fontSize="small"/> <a className={classes.link} 
+                href="mailto:professor@faustocintra.com.br">Prof. Fausto G. Cintra</a>
               </Typography>
           </Toolbar>
         </AppBar>
