@@ -1,11 +1,24 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
+//import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import {Link} from 'react-router-dom'
+import { makeStyles } from '@mui/styles';
+
+const useStyle = makeStyles(theme => ({
+  link:{
+    color: theme.palette.text.primary,
+    textDecoration: 'none',
+    width: '100%'
+  }
+}))
 
 export default function MainMenu() {
+
+  const classes = useStyle()
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -39,9 +52,17 @@ export default function MainMenu() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to="/aluno" className={classes.link}> 
+            Listagem de aluno
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to="/aluno/novo" className={classes.link}>
+            My account
+          </Link>
+        </MenuItem>
+        
       </Menu>
     </div>
   );
