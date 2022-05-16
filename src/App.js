@@ -41,6 +41,7 @@ function App() {
             <Routes>
               <Route path ="/aluno" element={<AlunoList />} />
               <Route path ="/aluno/novo" element={<AlunoForm />} />
+              <Route path ="/aluno/:id" element={<Alunoform />} />
             </Routes>
             </Box>
           <AppFooter /> 
