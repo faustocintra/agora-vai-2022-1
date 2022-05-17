@@ -9,11 +9,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AlunoList from './routed/AlunoList';
 import AlunoForm from './routed/AlunoForm';
 
-// const customTheme = createTheme({
-//   palette: {
-//     mode: 'dark'
-//   }
-// })
 const customTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -41,6 +36,7 @@ function App() {
         <Routes>
           <Route path='/aluno' element={<AlunoList/>}/>
           <Route path='/aluno/novo' element={<AlunoForm/>}/>
+          <Route path="/aluno/:id" element={<AlunoForm/>} />
         </Routes>
       </Box>
       
