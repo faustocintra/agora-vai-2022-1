@@ -6,11 +6,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function ConfirmDialog({title, hildren, open = false, onClose}) {
+export default function ConfirmDialog({title, children, open = false, onClose}) {
 
   const handleClose = answer => {
-      //answer === true: resposta positiva
-      //answer === false: resposta negativa a pergunta
+    // answer === true: resposta positiva à pergunta
+    // answer === false: resposta negativa à pergunta 
     onClose(answer);
   };
 
@@ -23,7 +23,7 @@ export default function ConfirmDialog({title, hildren, open = false, onClose}) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"title"}
+          {title}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -32,7 +32,7 @@ export default function ConfirmDialog({title, hildren, open = false, onClose}) {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => handleClose(true)} variant="outlined">OK</Button>
-          <Button onClick={() => handleClose(false)}autoFocus>Cancelar</Button>
+          <Button onClick={() => handleClose(false)} autoFocus>Cancelar</Button>
         </DialogActions>
       </Dialog>
     </div>

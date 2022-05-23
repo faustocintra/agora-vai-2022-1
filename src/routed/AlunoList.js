@@ -1,145 +1,147 @@
-import React from "react";
-import api from "../api";
-import { DataGrid } from '@mui/x-data-grid';
-import Paper from '@mui/material/Paper';
-import IconButton from "@mui/material/IconButton";
-import Editicon from '@mui/icons-material/Edit';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'    
-import { makeStyles } from "@mui/styles";
-import { useNavigate } from 'react-router-dom';
-import ConfirmDialog from '../ui/ConfirmDialog';
-import AlertBar from "../ui/alertBar";
-import Toolbar from '@mui/material/Toobar';
-import Button from '@mui/material/Button';
+import React from 'react'
+import api from '../api'
+import { DataGrid } from '@mui/x-data-grid'
+import Paper from '@mui/material/Paper'
+import IconButton from '@mui/material/IconButton'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import { makeStyles } from '@mui/styles'
+import { useNavigate } from 'react-router-dom'
+import ConfirmDialog from '../ui/ConfirmDialog'
+import alertBar from '../ui/alertBar'
+import Toolbar from '@mui/material/Toolbar'
+import Button from '@mui/material/Button'
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
-
-const useStyle = makeStyles(theme => ({
-    DataGrid: {
-        '& .MuiDataGrid-row button':{
-            visibility: 'hidden'
-        },
-        '& .MuiDataGrid-row button':{
-            visibility: 'visible'
-        }
+const useStyles = makeStyles(theme => ({
+  datagrid: {
+    '& .MuiDataGrid-row button': {
+      visibility: 'hidden'
     },
-    toolbar:{
-      padding: 0,
-      justifyContent: 'flex-end',
-      margin: '20px 0'
+    '& .MuiDataGrid-row:hover button': {
+      visibility: 'visible'
     }
+  },
+  toolbar: {
+    padding: 0,
+    justifyContent: 'flex-end',
+    margin: '20px 0'
+  }
 }))
 
+export default function AlunoList() {
 
-
-export default function AlunoList(){
-
-    const classes = useStyle()
+    const classes = useStyles()
 
     const navigate = useNavigate()
 
     const columns = [
-      { field: 'id', headerName: 'ID', width: 90 },
       {
         field: 'id',
-        headerName: 'Cód',
+        headerName: 'Cód.',
         width: 150,
-        type: 'number' //coluna alinha a direta
+        //flex: 1,
+        type: 'number'  // Coluna alinha à direita
       },
       {
         field: 'nome',
-        headerName: 'nome do(a) aluno(a)',
+        headerName: 'Nome do(a) aluno(a)',
         width: 400
+        //flex: 2
       },
       /*{
         field: 'data_nascimento',
-        headerName: 'Data Nasc',
+        headerName: 'Data Nasc.',
+        width: 150
+      },
+      {
+        field: 'doc_identidade',
+        headerName: 'Doc. Identidade',
         width: 150
       },*/
       {
-          field: 'doc_identidade',
-          headerName: 'Doc. Identidade',
-          width: 150
-        },
-        /*{
-          field: 'cpf',
-          headerName: 'CPF',
-          width: 150
-        },*/
-        /*{
-          field: 'endereco',
-          headerName: 'Endereco',
-          width: 400,
-          valueGetter: (params) =>
-            params.row.logradouro + ', ' + params.row.num_imovel
-        },*/
-        /*{
-          field: 'complemento',
-          headerName: 'Complemento',
-          width: 200
-        },
-  
-        {
-          field: 'bairro',
-          headerName: 'Bairro',
-          width: 200
-        },*/
-        /*{
-          field: 'municipio',
-          headerName: 'Municipio',
-          width: 300,
-          valueGetter: (params) =>
-              params.row.municipio + '/' + params.row.uf
-        },*/
-        {
-          field: 'teleone',
-          headerName: 'Telefone',
-          width: 200
-        },
-        {
-          field: 'email',
-          headerName: 'E-mail',
-          width: 200
-        },
-        {
-          field: 'turma',
-          headerName: 'Turma',
-          width: 200
-        },
-        {
-            field: 'editar',
-            headerName: 'Turma',
-            width: 150,
-            HeaderAlign: 'center',
-            align: 'center',
-            renderCell: params =>(
-              <IconButton 
-              aria-label='Editar'
-              onClick={() => navigate(`/aluno/${params.id}`)}
-              >
-                  <Editicon />
-              </IconButton>
-            )
-        },
-        {
-          field: 'excluir',
-          headerName: 'Excluir',
-          width: 150,
-          HeaderAlign: 'center',
-          align: 'center',
-          renderCell: params =>(
-            <IconButton 
+        field: 'cpf',
+        headerName: 'CPF',
+        width: 150,
+        //flex: 1
+      },
+      /*{
+        field: 'endereco',
+        headerName: 'Endereço',
+        width: 400,
+        valueGetter: (params) =>
+          params.row.logradouro + ', ' + params.row.num_imovel
+      },
+      {
+        field: 'complemento',
+        headerName: 'Complemento',
+        width: 200
+      },
+      {
+        field: 'bairro',
+        headerName: 'Bairro',
+        width: 200
+      },
+      {
+        field: 'municipio',
+        headerName: 'Município',
+        width: 300,
+        valueGetter: (params) =>
+          params.row.municipio + '/' + params.row.uf
+      },*/
+      {
+        field: 'telefone',
+        headerName: 'Telefone',
+        width: 200,
+        //flex: 1
+      },
+      {
+        field: 'email',
+        headerName: 'E-mail',
+        width: 350
+        //flex: 1
+      },
+      {
+        field: 'turma',
+        headerName: 'Turma',
+        width: 150,
+        //flex: 1
+      }, 
+      {
+        field: 'editar',
+        headerName: 'Editar',
+        width: 100,
+        headerAlign: 'center',
+        align: 'center',
+        renderCell: params => (
+          <IconButton 
+            aria-label='Editar'
+            onClick={() => navigate(`/aluno/${params.id}`)}
+          >
+            <EditIcon />
+          </IconButton>
+        )
+      },
+      {
+        field: 'excluir',
+        headerName: 'Excluir',
+        width: 100,
+        headerAlign: 'center',
+        align: 'center',
+        renderCell: params => (
+          <IconButton 
             aria-label='Excluir'
             onClick={() => handleDeleteClick(params.id)}
-            >
-                <DeleteForeverIcon color="error" />
-            </IconButton>
-          )
+          >
+            <DeleteForeverIcon color="error" />
+          </IconButton>
+        )
       }
+      
     ];
 
     const [state, setState] = React.useState(
-        //Lazy Inicializer
+        // Lazy intializer
         () => ({
             data: null,
             isDialogOpen: false,
@@ -153,20 +155,15 @@ export default function AlunoList(){
     const { 
       data, 
       isDialogOpen, 
-      deleteId, 
-      alertMessage, 
-      alertSeverity, 
-      isAlertOpen} = state
-    
-    function handleDeleteClick(id){
-      /*if(Window.confirm('Deseja realmente deletar esse pobre usuário?')){
-        alert('Vou excluir')
-      }
-      else{
-        alert('Não vou excluir')
-      }*/
-      //Abrir a caixa de diálogo
-      setState({...state, isDialogOpen: true, deleteId: id})
+      deleteId,
+      alertMessage,
+      alertSeverity,
+      isAlertOpen
+    } = state
+
+    function handleDeleteClick(id) {
+      // Abrir a caixa de diálogo
+      setState({...state, isDialogOpen: true, deleteId: id })
     }
 
     async function fetchData(newState = state) {
@@ -174,15 +171,14 @@ export default function AlunoList(){
             const response = await api.get('alunos')
             setState({...newState, data: response.data, isDialogOpen: false})
         }
-        catch(erro){
-          //Mostrar erro com barra de alerta
-          setState({
-            ...newState,
-            alertMessage:'ERRO: ' + erro.message,
-            alertSeverity:'error',
-            isAlertOpen: true
-          })
-            console.error(erro)
+        catch(erro) {
+            // Mostrar erro com barra de alerta
+            setState({
+              ...newState,
+              alertMessage: 'ERRO: ' + erro.message,
+              alertSeverity: 'error',
+              isAlertOpen: true
+            })
         }
     }
 
@@ -190,84 +186,94 @@ export default function AlunoList(){
         fetchData()
     }, [])
 
-    function handleDialogClose(answer){
-      //Fechar a caixa de dialogo
+    function handleDialogClose(answer) {
+      // Fechar a caixa de diálogo
       setState({...state, isDialogOpen: false})
-      //Se a resposta for positico, procedemos à exclusão do item
-      if(answer) deleteId()
+
+      // Se a resposta for positiva, procedemos à exclusão do item
+      if (answer) deleteItem()
     }
 
-    async function deleteItem(){
-    try{
-      await api.delete(`aluno/${deleteId}`)
-      //aqui vai a mensagem de feedback dizendo que a exclusão foi OK
-      const newState = {
-        ...state, 
-        isDialogOpen: false,
-        alertMessage: 'Exclusão efetuada com sucesso',
-        alertSeverity: 'success',
-        isAlertOpen: true
+    async function deleteItem() {
+      try {
+        await api.delete(`alunos/${deleteId}`)
+        // Fecha a caixa de diálogo e exibe a barra de alerta
+        const newState = {
+          ...state, 
+          isDialogOpen: false,
+          alertMessage: 'Exclusão efetuada com sucesso',
+          alertSeverity: 'success',
+          isAlertOpen: true
+        }
+        fetchData(newState) // Recarrega os dados da lista        
       }
-      fetchData(newState)//recarrega os dados da lista
-    }
-      catch(error){
-        //aqui vai a mensagem de feedback dizendo que deu erro na exlusão
-        //alert('Erro: ' + error.message)
-        setState({...state, 
+      catch(error) {
+        // Aqui vai mensagem de feedback dizendo que deu erro na exclusão
+        // Fechar a caixa de diálogo e esibe a barra de alerta
+        setState({
+          ...state, 
           isDialogOpen: false,
           alertMessage: 'ERRO: ' + error.message,
           alertSeverity: 'error',
           isAlertOpen: true
         })
+
       }
     }
 
-    const handleAlertClose(event, reason) {
+    function handleAlertClose(event, reason) {
       if (reason === 'clickaway') {
         return;
       }
   
-      //Fecha a barra de alerta
+      // Fecha a barra de alerta
       setState({...state, isAlertOpen: false})
-    };
+    }
 
-    
-    return(
+    return (
         <>
-        <ConfirmDialog 
-          title="Confirmar exclusão" 
-          open={isDialogOpen}
-          onClose={handleDialogClose}
-        >
-          Deseja realmente exlcuir este registro
-        </ConfirmDialog>
-        <AlertBar severity={alertSeverity} open={isAlertOpen} onClose={handleAlertClose}>
-          {alertMessage}
-        </AlertBar>
-        <h1>Listagem de alunos</h1>
-
-        <toolbar className={classes.toolbar}>
-          <button 
-          size="large"
-          variant="contained" 
-          color="secundary" 
-          startIcon={<PersonAddIcon/>}
-          onClick={() => navigate('/aluno/novo')}
+          <ConfirmDialog 
+            title="Confirmar exclusão" 
+            open={isDialogOpen}
+            onClose={handleDialogClose}
           >
-            Cadastrar novo aluno
-          </button>
-        </toolbar>
-        <paper elevation={10}>
-        <DataGrid
-        className={classes.DataGrid}
-        rows={data}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        autoHeight
-        disableSelectionOnClick
-      />
-      </paper>
+            Deseja realmente excluir este registro?
+          </ConfirmDialog>
+
+          <alertBar 
+            severity={alertSeverity} 
+            open={isAlertOpen}
+            onClose={handleAlertClose}
+          >
+            {alertMessage}
+          </alertBar>
+
+          <h1>Listagem de alunos</h1>
+
+          <Toolbar className={classes.toolbar}>
+            <Button 
+              size="large"
+              variant="contained"
+              color="secondary"
+              startIcon={<PersonAddIcon />}
+              onClick={() => navigate('/aluno/novo')}
+            >
+              Cadastrar novo aluno
+            </Button>
+          </Toolbar>
+
+          <Paper elevation={4}>
+            <DataGrid
+              className={classes.datagrid}
+              rows={data}
+              columns={columns}
+              pageSize={10}
+              rowsPerPageOptions={[5]}
+              autoHeight
+              disableSelectionOnClick
+            />
+          </Paper>            
         </>
+        
     )
 }
