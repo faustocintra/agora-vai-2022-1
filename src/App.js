@@ -7,6 +7,8 @@ import Box from '@mui/material/Box'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AlunoList from './routed/AlunoList'
 import AlunoForm from './routed/AlunoForm'
+import ProfessorList from './routed/ProfessorList';
+import CursoList from './routed/CursoList';
 
 const customTheme = createTheme ({
   palette: {
@@ -37,6 +39,8 @@ function App() {
               <Route path="/aluno" element={<AlunoList />} />
               <Route path="/aluno/novo" element={<AlunoForm />} />
               <Route path="/aluno/:id" element={<AlunoForm />} />
+              <Route path="/professor" element={<ProfessorList />} />
+              <Route path="/curso" element={<CursoList />} />
 
             </Routes>
           </Box>
