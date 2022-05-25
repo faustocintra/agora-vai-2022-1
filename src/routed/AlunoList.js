@@ -7,8 +7,8 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever' 
 import { makeStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom'
-import ConfirmDialog from '../ui/ConfirmDialog'
-import AlertBar from '../ui/AlertBar'
+import ConfirmDialog from '../Ui/ConfirmDialog'
+import AlertBar from '../Ui/AlertBar'
 import Toolbar from '@mui/material/Toolbar'
 import Button from '@mui/material/Button'
 import PersonAddIcon from '@mui/icons-material/PersonAdd';

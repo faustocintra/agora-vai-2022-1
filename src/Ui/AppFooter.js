@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography'
 import { makeStyles } from '@mui/styles';
-import { width } from '@mui/system';
+// import { width } from '@mui/system';
 import LocalCafeIcon from '@mui/icons-material/LocalCafe';
 
 const useStyles = makeStyles (theme => ({
