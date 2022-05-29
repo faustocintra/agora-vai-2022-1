@@ -57,12 +57,25 @@ export default function MainMenu() {
             Listagem de aluno
           </Link>
         </MenuItem>
+        
+        
         <MenuItem onClick={handleClose}>
-          <Link to="/aluno/novo" className={classes.link}>
-            My account
+          <Link to="/professor" className={classes.link}>
+            Listagem de professores
+          </Link>
+        </MenuItem>
+
+        <MenuItem onClick={handleClose}>
+          <Link to="/cursos" className={classes.link}>
+            Listagem de cursos
           </Link>
         </MenuItem>
         
+        <MenuItem onClick={handleClose}>
+          <Link to="/aluno/novo" className={classes.link}>
+            Cadastro
+          </Link>
+        </MenuItem>
       </Menu>
     </div>
   );
