@@ -8,7 +8,6 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import { makeStyles } from '@mui/styles'
 import { useNavigate } from 'react-router-dom'
 import ConfirmDialog from '../ui/ConfirmDialog'
-import alertBar from '../ui/alertBar'
 import Toolbar from '@mui/material/Toolbar'
 import Button from '@mui/material/Button'
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -180,7 +179,7 @@ export default function ProfessorList() {
 
     async function fetchData(newState = state) {
         try {
-            const response = await api.get('alunos')
+            const response = await api.get('professores')
             setState({...newState, data: response.data, isDialogOpen: false})
         }
         catch(erro) {
@@ -208,7 +207,7 @@ export default function ProfessorList() {
 
     async function deleteItem() {
       try {
-        await api.delete(`alunos/${deleteId}`)
+        await api.delete(`professores/${deleteId}`)
         // Fecha a caixa de diálogo e exibe a barra de alerta
         const newState = {
           ...state, 

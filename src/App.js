@@ -9,7 +9,9 @@ import AlunoList from './routed/AlunoList'
 import AlunoForm from './routed/AlunoForm'
 import CursosList from './routed/CursosList'
 import ProfessorList from './routed/ProfessorList'
+import Sobre from './routed/Sobre'
 
+import Appbody from './ui/bodyeu'
 const customTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -31,9 +33,9 @@ function App() {
         backgroundColor: customTheme.palette.background.default,
         color: customTheme.palette.text.primary
       }}>
+        
         <BrowserRouter>
           <AppHeader />
-
           <Box component="main" sx={{ margin: '24px' }}>
             <Routes>
               <Route path="/aluno" element={<AlunoList />} />
@@ -41,12 +43,22 @@ function App() {
               <Route path="/aluno/:id" element={<AlunoForm />} />
               <Route path="professor" element={<ProfessorList />} />
               <Route path="cursos" element={<CursosList />} />
+              <Route path="Sobre" element={<Sobre />} />
             </Routes>
+            
           </Box>
+          
+          
 
+
+          
           <AppFooter />
+          
         </BrowserRouter>
+        
       </Box>
+      
+
     </ThemeProvider>
   );
 }

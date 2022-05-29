@@ -76,6 +76,12 @@ export default function MainMenu() {
             Cadastro
           </Link>
         </MenuItem>
+
+        <MenuItem onClick={handleClose}>
+          <Link to="/Sobre" className={classes.link}>
+            Sobre mim
+          </Link>
+        </MenuItem>
       </Menu>
     </div>
   );

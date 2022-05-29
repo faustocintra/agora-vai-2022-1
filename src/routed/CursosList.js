@@ -44,13 +44,13 @@ export default function AlunoList() {
         type: 'number'  // Coluna alinha à direita
       },
       {
-        field: 'turma',
+        field: 'sigla',
         headerName: 'Sigla',
         width: 150,
         //flex: 1
       }, 
       {
-        field: 'Descricao',
+        field: 'descricao',
         headerName: 'Descrição',
         width: 400
         //flex: 2
@@ -66,7 +66,7 @@ export default function AlunoList() {
         width: 150
       },*/
       {
-        field: 'duracao',
+        field: 'duracao_meses',
         headerName: 'Duração em meses',
         width: 150,
         //flex: 1
@@ -96,13 +96,13 @@ export default function AlunoList() {
           params.row.municipio + '/' + params.row.uf
       },*/
       {
-        field: 'Carga',
+        field: 'carga_horaria',
         headerName: 'Carga Horária',
         width: 200,
         //flex: 1
       },
       {
-        field: 'Valor Total',
+        field: 'valor_total',
         headerName: 'Valor Total',
         width: 350
         //flex: 1
@@ -168,7 +168,7 @@ export default function AlunoList() {
 
     async function fetchData(newState = state) {
         try {
-            const response = await api.get('alunos')
+            const response = await api.get('cursos')
             setState({...newState, data: response.data, isDialogOpen: false})
         }
         catch(erro) {
@@ -196,7 +196,7 @@ export default function AlunoList() {
 
     async function deleteItem() {
       try {
-        await api.delete(`alunos/${deleteId}`)
+        await api.delete(`cursos/${deleteId}`)
         // Fecha a caixa de diálogo e exibe a barra de alerta
         const newState = {
           ...state, 
