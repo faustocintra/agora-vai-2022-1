@@ -63,7 +63,21 @@ export default function AlunoForm() {
         () => ({
             // Campos correspondentes a controles de seleção
             // precisam ter um valor inicial  
-            aluno: { uf: '', turma: '', data_nascimento: '' },
+            aluno: {
+                nome: '',
+                data_nascimento: '',
+                doc_identidade: '',
+                cpf: '',
+                logradouro: '',
+                num_imovel: '',
+                complemento: '',
+                bairro: '',
+                municipio: '',
+                uf: '', 
+                telefone: '',
+                email: '',
+                turma: ''   
+            },
             alertSeverity: 'success',
             isAlertOpen: false,
             alertMessage: '',
