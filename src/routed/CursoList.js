@@ -149,7 +149,7 @@ export default function AlunoList(){
 
     async function deleteItem(){
       try{
-        await api.delete(`curso/${deleteID}`)
+        await api.delete(`cursos/${deleteID}`)
         const newState = {...state, isDialogOpen: false, isAlertOpen: true, alertMessage: "Exclusão realizada", alertSeverity: "success"}
         fetchData(newState)
       }catch(error){

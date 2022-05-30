@@ -10,6 +10,10 @@ import MenuItem from "@mui/material/MenuItem"
 import Toolbar from "@mui/material/Toolbar"
 import Button from "@mui/material/Button"
 import AlertBar from "../ui/AlertBar"
+import ModalProgress from "../ui/ModalProgress"
+import api from "../api"
+import { useNavigate, useParams} from 'react-router-dom'
+import ConfirmDialog from '../ui/ConfirmDialog'
 
 
 const useStyles = makeStyles(theme =>({
@@ -55,16 +59,73 @@ export default function AlunoForm(){
 
     const classes = useStyles()
 
+    const navigate = useNavigate()
+
+    const params = useParams()
+
     const [state, setState] = React.useState(
         ()=>({
-            aluno:{ uf: "", turma: ""},
+            aluno:{ 
+                nome:"",
+                data_nascimento:"",
+                doc_identidade:"",
+                cpf:"",
+                logradouro:"",
+                num_imovel:"",
+                complemento:"",
+                bairro:"",
+                municipio:"",
+                uf: "",
+                telefone:"",
+                email:"", 
+                turma: ""},
             alertSeverity: "success",
             isAlertOpen: false,
-            alertMessage: ""
+            alertMessage: "",
+            isModalProgressOpen: false,
+            pageTitle: 'Cadastrar novo aluno',
+            isDialogOpen: false
         })
     )
 
-    const {aluno, alertSeverity,alertMessage, isAlertOpen} = state;
+    const {aluno,
+            alertSeverity,
+            alertMessage,
+            isAlertOpen, 
+            isModalProgressOpen,
+            pageTitle,
+            isDialogOpen
+        } = state;
+
+
+    React.useLayoutEffect(()=>{
+        // Se houver parâmetro na rota, estamos editando um registro já
+        // existente. Portanto, precisamos buscar os dados desse registro
+        // para carregar nos campos e editar
+        if(params.id){
+            fetchData()
+        }
+    }, [])
+    
+    async function fetchData(){
+        try{
+            const response = await api.get(`alunos/${params.id}`)
+            setState({
+                    ...state,
+                    aluno: response.data,
+                    pageTitle: 'Editando aluno id. ' + params.id
+                })
+        }
+        catch(erro){
+            setState({
+                ...state,
+                alertSeverity: 'error',
+                alertMessage: 'Erro: '+ erro.message,
+                isAlertOpen: true,
+                pageTitle: '## Erro ##'
+            })
+        }
+    }
 
 
     const handleInputChange = (event, fieldName = event.target.id)=>{
@@ -87,16 +148,86 @@ export default function AlunoForm(){
         if (reason === 'clickaway') {
           return;
         }
-        setState({...state, isAlertOpen: false})
+        setState({...state, isAlertOpen: false, isModalProgressOpen: false})
+
+
+        if(alertSeverity === 'success') navigate('/aluno')
       };
+
+
+      function handleFormSubmit(event){
+          event.preventDefault()
+          saveData()
+      }
+
+      async function saveData(){
+
+        setState({...state, isModalProgressOpen:true})
+
+
+        try{
+
+            if(aluno.id) await api.put(`alunos/${params.id}`, aluno)
+            else await api.post('alunos', aluno )
+
+            setState({
+                ...state,
+                isAlertOpen: true,
+                alertSeverity: "success",
+                alertMessage: "Dados salvos com sucesso",
+            })
+        }
+        catch(erro){
+            setState({
+                ...state,
+                isAlertOpen: true,
+                alertSeverity: 'error',
+                alertMessage: 'ERRO' + erro.message,
+            })
+        }
+
+      }
+
+      function isFormModified(){
+          for(let field in aluno){
+              if(aluno[field] !== '') return true
+          }
+          return false
+      }
+
+      function handleVoltarButtonClick(){
+        // Se o formulário tiver sido modificado, chama a caixa de diálogo
+        // para perguntar se o usuário realmente quer voltar, perdendo dados
+        if (isFormModified()) setState({...state,isDialogOpen: true})
+
+        else navigate('/aluno')
+      }
+
+      function handleDialogClose(answer){
+
+        setState({...state, isDialogOpen: false})
+
+        if(answer) navigate ('/aluno')
+      }
 
     return(
         <>
-        <h1>Cadastro de alunos</h1>
+        <h1>{pageTitle}</h1>
 
         <AlertBar severity={alertSeverity} open={isAlertOpen} children={alertMessage} onClose={handleAlertClose}/>
 
-        <form className={classes.form}>
+
+        <ModalProgress open={isModalProgressOpen}/>
+
+        <ConfirmDialog
+            title="Os dados foram modificados"
+            open={isDialogOpen}
+            onClose = {handleDialogClose}
+            >
+            Deseja realmente descartar as informações não salvas?
+        </ConfirmDialog>
+
+        <form className={classes.form} onSubmit={handleFormSubmit}>
             <TextField
                 id="nome"
                 label="Nome completo"
@@ -186,6 +317,18 @@ export default function AlunoForm(){
             />
 
             <TextField
+            
+                id="bairro"
+                label="Bairro"
+                value={aluno.bairro}
+                variant="filled"
+                placeholder='Informe o bairro'
+                required
+                fullWidth
+                onChange={handleInputChange}
+            />
+
+            <TextField
                 id="municipio"
                 label="Municipio"
                 value={aluno.municipio}
@@ -270,6 +413,7 @@ export default function AlunoForm(){
 
                     <Button
                         variant='outlined'
+                        onClick={handleVoltarButtonClick}
                     >
                         Voltar
                     </Button>
