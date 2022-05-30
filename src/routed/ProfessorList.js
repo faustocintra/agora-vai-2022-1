@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme=>({
     }
   }))
 
-export default function AlunoList(){
+export default function ProfessorList(){
 
     const classes = useStyles();
 
