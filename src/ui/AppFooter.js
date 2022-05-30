@@ -37,7 +37,7 @@ export default function AppFooter() {
       <AppBar position="static" component="footer">
         <Toolbar variant="dense" className={classes.toolbar}>
           <Typography className={classes.typog} variant="caption">
-              Desenvolvido com <CoffeeIcon fontSize="small"/> por <a className={classes.link} href='https://github.com/GabrielJesusS'>Gabriel Jesus</a>
+              Desenvolvido com <CoffeeIcon fontSize="small"/> por <a className={classes.link} href='https://github.com/GustavoSilvah'>Gustavo Silva</a>
           </Typography >
         </Toolbar>
       </AppBar>
