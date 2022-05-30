@@ -433,7 +433,7 @@ export default function AlunoForm() {
 
             </form>
 
-            <p>{JSON.stringify(aluno)}</p>
+            {/*<p>{JSON.stringify(aluno)}</p>*/}
         </>
     )
 }
