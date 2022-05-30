@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme=>({
 
 
 
-export default function AlunoList(){
+export default function ProfessorList(){
 
     const classes = useStyles();
 
@@ -184,7 +184,7 @@ export default function AlunoList(){
             <h1>Listagem de professores</h1>
             
             <Toolbar className={classes.toolbar}>
-              <Button size='large' color="secondary" variant='contained' onClick={()=> navigate("/aluno/novo")} startIcon={<PersonAddIcon/>}>
+              <Button size='large' color="secondary" variant='contained' onClick={()=> navigate("/professor/novo")} startIcon={<PersonAddIcon/>}>
                 
                 Cadastrar novo professor
               </Button>
