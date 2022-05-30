@@ -9,6 +9,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function AlertBar({children, severity, open = false, onClose}) {
+ 
 
   return (
     <Stack spacing={2} sx={{ width: '100%' }}>
