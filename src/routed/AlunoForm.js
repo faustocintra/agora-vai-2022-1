@@ -12,6 +12,7 @@ import AlertBar from '../ui/alertBar'
 import ModalProgress from '../ui/ModalProgress'
 import api from '../api'
 import { useNavigate, useParams } from 'react-router-dom'
+import ConfirmDialog from '../ui/ConfirmDialog'
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -63,11 +64,28 @@ export default function AlunoForm() {
         () => ({
             // Campos correspondentes a controles de seleção
             // precisam ter um valor inicial  
-            aluno: { uf: '', turma: '', data_nascimento: '' },
+            aluno: { 
+            nome:'',    
+            uf: '', 
+            turma: '', 
+            data_nascimento: '',
+            doc_identidade:'',
+            cpf:'',
+            logradouro:'',
+            num_imovel:'',
+            complemento:'',
+            bairro:'',
+            municipio:'',
+            uf:'',
+            telefone:'',
+            email:'',
+            turma:''},
             alertSeverity: 'success',
             isAlertOpen: false,
             alertMessage: '',
-            isModalProgressOpen: false
+            isModalProgressOpen: false,
+            pageTitle:'Cadastrar novo aluno',
+            isDialogOpen: false
         })
     )
     const {
@@ -75,7 +93,9 @@ export default function AlunoForm() {
         alertSeverity,
         isAlertOpen,
         alertMessage,
-        isModalProgressOpen
+        isModalProgressOpen,
+        pageTitle,
+        isDialogOpen
     } = state
 
     React.useEffect(() => {
@@ -94,7 +114,8 @@ export default function AlunoForm() {
             const response = await api.get(`alunos/${params.id}`)
             setState({
                 ...state,
-                aluno: response.data
+                aluno: response.data,
+                pageTitle:'Editando aluno id. ' + params.id
             })
         }
         catch(erro){
@@ -102,7 +123,8 @@ export default function AlunoForm() {
                 ...state,
                 alertSeverity: 'error',
                 alertMessage: 'ERRO' + erro.message,
-                isAlertOpen: true
+                isAlertOpen: true,
+                pageTitle:'## ERRO ##'
             })
         }
     }
@@ -144,6 +166,10 @@ export default function AlunoForm() {
         setState({...state, isModalProgressOpen: true})
 
         try {
+            //Se params.id existe entao estamos editando, verno put
+            if(aluno.id) await api.put(`alunos/${params.id}`, aluno)
+            //senao, estamos criando um novo
+            else await api.post(`alunos`, aluno)
             await api.post('alunos', aluno)
             setState({
                 ...state,
@@ -164,6 +190,30 @@ export default function AlunoForm() {
         }
     }
 
+    function isFormModified(){
+        for(let field in aluno){
+            if(aluno[field] !== '') return true
+        }
+        return false
+    }
+
+    function handleVoltarButtonClick(){
+        if(isFormModified()){
+            //se o formulario tiver sido editado, chama a caixa de dialogo
+            //para perguntar ao usuario se realmente quer voltar, perdendo dados
+            setState({...state, isDialogOpen: true}) 
+        }
+        //Se nao houve modificação retorna diretamene
+        else navigate('/aluno')
+    }
+    function handleDialogClose(answer){
+        //fecha a caixa de dialogo
+        setState({...state, isDialogOpen: false})
+
+        //se o usuário tiver res´pmdodp "sim", volta à listagem
+        if(answer) navigate('/aluno')
+    }
+
     return (
         <>
             <AlertBar 
@@ -175,8 +225,16 @@ export default function AlunoForm() {
             </AlertBar>
 
             <ModalProgress open={isModalProgressOpen} />
+
+            <ConfirmDialog 
+            title="Os dados foram modificados" 
+            open={isDialogOpen}
+            onClose={handleDialogClose}
+          >
+            Deseja realmente Descartar as informações não salvas?
+          </ConfirmDialog>
             
-            <h1>Cadastro de alunos</h1>
+            <h1>{pageTitle}</h1>
 
             <form className={classes.form} onSubmit={handleFormSubmit}>
                 
@@ -367,6 +425,7 @@ export default function AlunoForm() {
                     </Button>
                     <Button
                         variant="outlined"
+                        onClick={handleVoltarButtonClick}
                     >
                         Voltar
                     </Button>
@@ -374,7 +433,7 @@ export default function AlunoForm() {
 
             </form>
 
-            <p>{JSON.stringify(aluno)}</p>
+            {/*<p>{JSON.stringify(aluno)}</p>*/}
         </>
     )
 }
