@@ -18,7 +18,7 @@ export default function ConfirmeDialog(title, children, open = false, onClose) {
     <div>
       <Dialog
         open={open}
-        onClose={handleClose(false)} //se a pessoa der esc, interpreto que ela não aceitou
+        onClose={() => handleClose(false)} //se a pessoa der esc, interpreto que ela não aceitou
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
