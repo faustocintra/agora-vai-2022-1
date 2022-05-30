@@ -3,6 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import logo from '../Assets/agora-vai-logo.png'
+
 import MainMenu from './MainMenu'
 
 
@@ -12,12 +13,17 @@ export default function AppHeader() {
       <AppBar position="static">
         <Toolbar variant="dense">
           
+
           <MainMenu/>
-          <a href='#'>
+          <a href='http://localhost:3000/'>
               <img style={{ height: '50px'}} src={logo} alt='Logotipo da escola de idiomas Agora vai'/>
               </a>
         </Toolbar>
+
+        
       </AppBar>
     </Box>
+
+    
   );
 }
