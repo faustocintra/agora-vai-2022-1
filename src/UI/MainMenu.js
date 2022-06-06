@@ -52,18 +52,35 @@ export default function MainMenu() {
           'aria-labelledby': 'basic-button',
         }}
       >
+
+        <h2>Alunos</h2>
         <MenuItem onClick={handleClose}>
           <Link to="/aluno" className={classes.link}> 
             Listagem de aluno
           </Link>
         </MenuItem>
+
+        <MenuItem onClick={handleClose}>
+          <Link to="/aluno/novo" className={classes.link}>
+            Cadastro de aluno
+          </Link>
+        </MenuItem>
         
-        
+        <h2>Professores</h2>
+
         <MenuItem onClick={handleClose}>
           <Link to="/professor" className={classes.link}>
             Listagem de professores
           </Link>
         </MenuItem>
+
+        <MenuItem onClick={handleClose}>
+          <Link to="/professor/novo" className={classes.link}>
+            Cadastro de professores
+          </Link>
+        </MenuItem>
+
+        <h2>Cursos</h2>
 
         <MenuItem onClick={handleClose}>
           <Link to="/cursos" className={classes.link}>
@@ -72,10 +89,12 @@ export default function MainMenu() {
         </MenuItem>
         
         <MenuItem onClick={handleClose}>
-          <Link to="/aluno/novo" className={classes.link}>
-            Cadastro
+          <Link to="/curso/novo" className={classes.link}>
+            Cadastro de cursos
           </Link>
         </MenuItem>
+
+        <h2>Site</h2>
 
         <MenuItem onClick={handleClose}>
           <Link to="/Sobre" className={classes.link}>

@@ -55,46 +55,14 @@ export default function AlunoList() {
         width: 400
         //flex: 2
       },
-      /*{
-        field: 'data_nascimento',
-        headerName: 'Data Nasc.',
-        width: 150
-      },
-      {
-        field: 'doc_identidade',
-        headerName: 'Doc. Identidade',
-        width: 150
-      },*/
+      
       {
         field: 'duracao_meses',
         headerName: 'Duração em meses',
         width: 150,
         //flex: 1
       },
-      /*{
-        field: 'endereco',
-        headerName: 'Endereço',
-        width: 400,
-        valueGetter: (params) =>
-          params.row.logradouro + ', ' + params.row.num_imovel
-      },
-      {
-        field: 'complemento',
-        headerName: 'Complemento',
-        width: 200
-      },
-      {
-        field: 'bairro',
-        headerName: 'Bairro',
-        width: 200
-      },
-      {
-        field: 'municipio',
-        headerName: 'Município',
-        width: 300,
-        valueGetter: (params) =>
-          params.row.municipio + '/' + params.row.uf
-      },*/
+      
       {
         field: 'carga_horaria',
         headerName: 'Carga Horária',
@@ -116,7 +84,7 @@ export default function AlunoList() {
         renderCell: params => (
           <IconButton 
             aria-label='Editar'
-            onClick={() => navigate(`/aluno/${params.id}`)}
+            onClick={() => navigate(`/curso/${params.id}`)}
           >
             <EditIcon />
           </IconButton>
@@ -256,7 +224,7 @@ export default function AlunoList() {
               variant="contained"
               color="secondary"
               startIcon={<PersonAddIcon />}
-              onClick={() => navigate('/aluno/novo')}
+              onClick={() => navigate('/curso/novo')}
             >
               Cadastrar novo curso
             </Button>

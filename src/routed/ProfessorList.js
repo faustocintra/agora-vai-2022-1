@@ -52,54 +52,14 @@ export default function ProfessorList() {
         field: 'data_nascimento',
         headerName: 'Data Nasc.',
         width: 150
-      },/*
-      {
-        field: 'doc_identidade',
-        headerName: 'Doc. Identidade',
-        width: 150
-      },*/
+      },
       {
         field: 'cpf',
         headerName: 'CPF',
         width: 150,
         //flex: 1
       },
-      /*{
-        field: 'endereco',
-        headerName: 'Endereço',
-        width: 400,
-        valueGetter: (params) =>
-          params.row.logradouro + ', ' + params.row.num_imovel
-      },
-      {
-        field: 'complemento',
-        headerName: 'Complemento',
-        width: 200
-      },
-      {
-        field: 'bairro',
-        headerName: 'Bairro',
-        width: 200
-      },
-      {
-        field: 'municipio',
-        headerName: 'Município',
-        width: 300,
-        valueGetter: (params) =>
-          params.row.municipio + '/' + params.row.uf
-      },*/
-      /*{
-        field: 'telefone',
-        headerName: 'Telefone',
-        width: 200,
-        //flex: 1
-      },
-      {
-        field: 'turma',
-        headerName: 'Turma',
-        width: 150,
-        //flex: 1
-      }*/, 
+       
       {
         field: 'formacao',
         headerName: 'Formação',
@@ -127,7 +87,7 @@ export default function ProfessorList() {
         renderCell: params => (
           <IconButton 
             aria-label='Editar'
-            onClick={() => navigate(`/aluno/${params.id}`)}
+            onClick={() => navigate(`/professor/${params.id}`)}
           >
             <EditIcon />
           </IconButton>
@@ -267,7 +227,7 @@ export default function ProfessorList() {
               variant="contained"
               color="secondary"
               startIcon={<PersonAddIcon />}
-              onClick={() => navigate('/aluno/novo')}
+              onClick={() => navigate('/professor/novo')}
             >
               Cadastrar novo professor
             </Button>
