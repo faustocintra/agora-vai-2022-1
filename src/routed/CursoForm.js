@@ -33,23 +33,12 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const unidadesFed = [
-    {sigla:"DF", nome:"Distrito Federal"},
-    {sigla: "ES", nome: "Espirito Santo"},
-    {sigla: "GO", nome: 'Goiás'},
-    { sigla: 'MS', nome: 'Mato Grosso do Sul' },
-    { sigla: 'MG', nome: 'Minas Gerais' },
-    { sigla: 'PR', nome: 'Paraná' },
-    { sigla: 'RJ', nome: 'Rio de Janeiro' },
-    { sigla: 'SP', nome: 'São Paulo' }
+const siglas = [ //fazer de acordo com a API
+    { sigla: 'ESP10', descricao: '[ESP10]' },
+    { sigla: 'FRA10', descricao: '[FRA10]' },
+    { sigla: 'ING10', descricao: '[ING10]' }
 ]
-
-const turmas = [
-    { sigla: 'ESP10', descricao: '[ESP10] Espanhol iniciante' },
-    { sigla: 'FRA10', descricao: '[FRA10] Francês iniciante' },
-    { sigla: 'ING10', descricao: '[ING10] Inglês iniciante' }
-]
-export default function AlunoForm() {
+export default function CursoForm() {
 
     const classes = useStyles()
 
@@ -60,32 +49,25 @@ export default function AlunoForm() {
     const [state, setState] = React.useState(
         //Lazy initalizer
         () => ({
-            aluno:{
+            curso:{
                 nome:'',
-                data_nascimento:'',
-                doc_identidade:'',
-                cpf:'',
-                logradouro:'',
-                num_imovel:'',
-                complemento:'',
-                bairro:'',
-                municipio:'',
-                uf:'',
-                telefone:'',
-                email:'',
-                turma:''
+                sigla: '',
+                descricao:'',
+                duracao_meses:'',
+                carga_horaria:'',
+                valor_total:''
             },
             alertSeverity: 'success',
             isAlertOpen: false,
             alertMessage:'',
             isModalProgressOpen: false,
-            pageTitle: 'Cadastrar novo aluno',
+            pageTitle: 'Cadastrar novo Curso',
             isDialogOpen:false
         })
     )
 
     const {
-        aluno,
+        curso,
         alertSeverity,
         isAlertOpen,
         alertMessage,
@@ -108,11 +90,11 @@ export default function AlunoForm() {
    
     async function fetchData() {
         try {
-            const response = await api.get(`alunos/${params.id}`)
+            const response = await api.get(`cursos/${params.id}`)
             setState({
                 ...state,
-                aluno: response.data,
-                pageTitle: 'Editando aluno id. ' + params.id
+                curso: response.data,
+                pageTitle: 'Editando Curso id. ' + params.id
             })
         }
         catch(erro) {
@@ -129,14 +111,14 @@ export default function AlunoForm() {
     function handleInputChange(event, fieldName = event.target.id) {
         console.log(`fieldName: ${fieldName}, value: ${event?.target?.value}`)
         // Sincroniza o valor do input com a variável de estado
-        const newAluno = {...aluno}     // Tira uma cópia do aluno
+        const newCurso = {...curso}     // Tira uma cópia do curso
 
         // O componente DesktopDatePicker envia newValue em vez de
         // event; portanto, é necessário tratamento específico para ele
-        if(fieldName === 'data_nascimento') newAluno[fieldName] = event
-        else newAluno[fieldName] = event.target.value // Atualiza o campo
+        if(fieldName === 'data_nascimento') newCurso[fieldName] = event
+        else newCurso[fieldName] = event.target.value // Atualiza o campo
 
-        setState({ ...state, aluno: newAluno })
+        setState({ ...state, curso: newCurso })
     }
 
     function handleAlertClose(event, reason) {
@@ -149,7 +131,7 @@ export default function AlunoForm() {
 
         // Se os dados forem salvos com sucesso, volta para a página
         // de listagem
-        if(alertSeverity === 'success') navigate('/aluno')
+        if(alertSeverity === 'success') navigate('/curso')
     }
 
 
@@ -164,10 +146,10 @@ export default function AlunoForm() {
         setState({...state,isModalProgressOpen: true})
 
         try {
-            // Se aluno.id existe, estamos editando, verbo PUT
-            if(aluno.id) await api.put(`alunos/${params.id}`, aluno)
+            // Se curso.id existe, estamos editando, verbo PUT
+            if(curso.id) await api.put(`cursos/${params.id}`, curso)
             // Senão, estamos criando um novo, verbo POST
-            else await api.post('alunos', aluno)
+            else await api.post('cursos', curso)
 
             setState({
                 ...state,
@@ -187,8 +169,8 @@ export default function AlunoForm() {
     }
 
     function isFormModified() {
-        for(let field in aluno) {
-            if(aluno[field] !== '') return true
+        for(let field in curso) {
+            if(curso[field] !== '') return true
         }
         return false
     }
@@ -200,7 +182,7 @@ export default function AlunoForm() {
         if(isFormModified()) setState({...state, isDialogOpen: true})
 
         // Se não houve modificação, pode voltar diretamente para a listagem
-        else navigate('/aluno')
+        else navigate('/curso')
     }
 
     function handleDialogClose(answer) {
@@ -209,7 +191,7 @@ export default function AlunoForm() {
         setState({...state, isDialogOpen: false})
 
         // Se o usuário tiver respondido "sim", volta à listagem
-        if(answer) navigate('/aluno')
+        if(answer) navigate('/curso')
     }
     return (
     <>
@@ -235,170 +217,67 @@ export default function AlunoForm() {
 
         <from className={classes.form} onSubmit={handleFormSubmit}>
             <TextField
-                id="nome"
-                label="Nome completo"
-                value={aluno.nome}
+                id="sigla"
+                label="Sigla"
+                value={curso.sigla}
                 variant="filled"
-                placeholder="Informe o nome completo do(a) aluno(a)"
-                required
-                fullWidth
-                onChange={handleInputChange}
-            />
-
-            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptLocale}>
-                <DesktopDatePicker
-                    label="Data de nascimento"
-                    inputFormat="dd/MM/yyyy"
-                    value={aluno.data_nascimento}
-                    onChange={newValue => handleInputChange(newValue, 'data_nascimento')}
-                    renderInput={(params) => <TextField
-                        id="data_nascimento"
-                        variant="filled"
-                        required
-                        fullWidth                             
-                        {...params} 
-                    />}
-                />
-            </LocalizationProvider>
-
-            <TextField
-                id="doc_identidade"
-                label="Documento de identidade"
-                value={aluno.doc_identidade}
-                variant="filled"
-                placeholder="Informe o documento de identidade"
-                required
-                fullWidth
-                onChange={handleInputChange}
-            />
-
-            <InputMask
-                mask="999.999.999-99" //mascara
-                value={aluno.cpf}
-                onChange={event => handleInputChange(event, 'cpf')}
-            >
-                {
-                    () => <TextField
-                        id="cpf"
-                        label="CPF"
-                        variant="filled"
-                        placeholder="Informe o CPF"
-                        required
-                        fullWidth
-                />
-                }
-            </InputMask>
-
-            <TextField
-                id="logradouro"
-                label="Logradouro (Rua, Av., etc)"
-                value={aluno.logradouro}
-                variant="filled"
-                placeholder="Informe o logradouro"
-                required
-                fullWidth
-                onChange={handleInputChange}
-            />
-
-            <TextField
-                id="num_imovel"
-                label="Nº"
-                value={aluno.num_imovel}
-                variant="filled"
-                placeholder="Informe o numero do imóvel"
-                required
-                fullWidth
-                onChange={handleInputChange}
-            />
-
-            <TextField
-                id="complemento"
-                label = "Complemento"
-                value={aluno.complemento}
-                variant="filled"
-                placeholder="Informe o complemento do imóvel(se houver)"
-                fullWidth
-                onChange={handleInputChange}
-            />
-
-            <TextField
-                id="municipio"
-                label = "Municipio"
-                value={aluno.municipio}
-                variant="filled"
-                placeholder="Informe o município"
-                required
-                fullWidth
-                onChange={handleInputChange}
-            />
-
-            <TextField
-                id="uf"
-                label = "UF"
-                value={aluno.uf}
-                variant="filled"
-                placeholder="Informe a UF"
+                placeholder="Informe a sigla"
                 required
                 fullWidth
                 select
-                onChange={event => handleInputChange(event, 'uf')}
+                onChange={event => handleInputChange(event, 'sigla')}
             >
                 {
-                    unidadesFed.map(uf => (
-                        <MenuItem key={uf.sigla} value={uf.sigla}>
-                            {uf.nome}
-                        </MenuItem>
-                    ))
-                }
-            </TextField>
-
-            <InputMask
-                mask="(99) 99999-9999"
-                value={aluno.telefone}
-                onChange={event => handleInputChange(event, 'telefone')}
-            >
-                {
-                    () => <TextField
-                        id="telefone"
-                        label="Celular"
-                        variant="filled"
-                        placeholder="Informe o celular"
-                        required
-                        fullWidth
-                    />
-                }
-            </InputMask>
-
-            <TextField
-                id="email"
-                label="E-mail"
-                value={aluno.email}
-                variant="filled"
-                placeholder="Informe o e-mail"
-                required
-                fullWidth
-                onChange={handleInputChange}
-            />
-
-            <TextField
-                id="turma"
-                label="Turma"
-                value={aluno.turma}
-                variant="filled"
-                placeholder="Informe a turma"
-                required
-                fullWidth
-                select
-                onChange={event => handleInputChange(event, 'turma')}
-            >
-                {
-                    turmas.map(t => (
+                    siglas.map(t => (
                         <MenuItem key={t.sigla} value={t.sigla}>
                             {t.descricao}
                         </MenuItem>
                     ))
                 }
             </TextField>
+
+            <TextField
+                id="descricao"
+                label="Descricao"
+                value={curso.descricao}
+                variant="filled"
+                placeholder="Informe a Descrição"
+                required
+                fullWidth
+                onChange={handleInputChange}
+            />
+
+            <TextField
+                id="duracao_meses"
+                label="Duração em Meses"
+                value={curso.duracao_meses}
+                variant="filled"
+                placeholder="Informe a duração em meses"
+                required
+                fullWidth
+                onChange={handleInputChange}
+            />
+
+            <TextField
+                id="carga_horario"
+                label="Carga Horária"
+                value={curso.carga_horaria}
+                variant="filled"
+                placeholder="Informe a carga horária"
+                required
+                fullWidth
+                onChange={handleInputChange}
+            />
+            <TextField
+                id="valor_total"
+                label="Valor Total"
+                value={curso.valor_total}
+                variant="filled"
+                placeholder="Informe a o valor total"
+                required
+                fullWidth
+                onChange={handleInputChange}
+            />
 
             <Toolbar className={classes.toolbar}>
                 <Button
@@ -416,7 +295,6 @@ export default function AlunoForm() {
                 </Button>
             </Toolbar>
         </from>
-        {/* <p>{JSON.stringify(aluno)}</p> */}
     </>
     )
 }

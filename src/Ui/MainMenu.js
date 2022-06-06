@@ -11,6 +11,13 @@ const useStyle = makeStyles(theme => ({
     color: theme.palette.text.primary,
     textDecoration: 'none',
     width: '100%'
+  },
+  titulo: {
+    padding: 20,
+    fontSize: 20,
+    color: 'aqua',
+    fontWeight: 'bold'
+
   }
 }))
 
@@ -52,11 +59,26 @@ export default function MainMenu() {
           'aria-labelledby': 'basic-button',
         }}
       >
+        <span className={classes.titulo}> Aluno</span>
         <MenuItem onClick={handleClose}>
           <Link to='/aluno' className={classes.link}> Listagem de Alunos</Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <Link to='/aluno/novo' className={classes.link}> Cadastrar Novo Aluno</Link>
+        </MenuItem>
+        <span className={classes.titulo}> Curso</span>
+        <MenuItem onClick={handleClose}>
+          <Link to='/curso' className={classes.link}> Listagem de Cursos</Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to='/curso/novo' className={classes.link}> Cadastrar Novo Curso</Link>
+        </MenuItem>
+        <span className={classes.titulo}> Professor</span>
+        <MenuItem onClick={handleClose}>
+          <Link to='/professor' className={classes.link}> Listagem de Professor</Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to='/professor/novo' className={classes.link}> Cadastrar Novo Professor</Link>
         </MenuItem>
       </Menu>
     </div>
