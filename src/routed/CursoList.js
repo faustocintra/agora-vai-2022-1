@@ -44,30 +44,30 @@ export default function CursoList() {
         type: 'number'  // Coluna alinha à direita
       },
       {
-        field: 'sigla',
+        field: 'sigla', //Antes era o nome 
         headerName: 'Sigla',
         width: 150
         //flex: 2
       },
       {
-        field: 'descricao',
+        field: 'descricao', //Antes era o CPF
         headerName: 'Descrição',
         width: 400
       },
       {
-        field: 'duracao_meses',
+        field: 'duracao_meses', //Antes era o telefone
         headerName: 'Duração meses',
         width: 150,
         //flex: 1
       },
       {
-        field: 'carga_horaria',
+        field: 'carga_horaria', //Antes era o e-mail
         headerName: 'Carga Horaria',
         width: 150,
         //flex: 1
       },
       {
-        field: 'valor_total',
+        field: 'valor_total', //Antes era a tuma
         headerName: 'Valor total',
         width: 150
         //flex: 1
@@ -161,7 +161,7 @@ export default function CursoList() {
 
     async function deleteItem() {
       try {
-        await api.delete(`curso/${deleteId}`)
+        await api.delete(`cursos/${deleteId}`)
         // Fecha a caixa de diálogo e exibe a barra de alerta
         const newState = {
           ...state, 

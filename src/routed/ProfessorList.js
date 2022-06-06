@@ -50,24 +50,19 @@ export default function ProfessorList() {
         //flex: 2
       },
       {
-        field: 'data_nascimento',
-        headerName: 'Data Nasc.',
-        width: 250
-      },
-      {
         field: 'cpf',
         headerName: 'CPF',
         width: 150,
         //flex: 1
       },
       {
-        field: 'formacao',
+        field: 'formacao', //Antes era o telefone
         headerName: 'Formação',
         width: 400,
         //flex: 1
       },
       {
-        field: 'valor_hora_aula',
+        field: 'valor_hora_aula', //Antes era a turma
         headerName: 'Valor Hora Aula',
         width: 150,
         //flex: 1

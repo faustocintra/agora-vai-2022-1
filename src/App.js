@@ -8,7 +8,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AlunoList from './routed/AlunoList'
 import AlunoForm from './routed/AlunoForm'
 import ProfessorList from './routed/ProfessorList'
+import ProfessorForm from './routed/ProfessorForm'
 import CursoList from './routed/CursoList'
+import CursoForm from './routed/CursoForm'
 
 const customTheme = createTheme({
   palette: {
@@ -45,12 +47,16 @@ function App() {
           <Box component="main" sx={{ margin: '24px' }}>
             <Routes>
               <Route path="/professor" element={<ProfessorList />} />
+              <Route path="/professor/novo" element={<ProfessorForm />} />
+              <Route path="/professor/:id" element={<ProfessorForm />} />
               </Routes>
           </Box>
 
           <Box component="main" sx={{ margin: '24px' }}>
             <Routes>
               <Route path="/curso" element={<CursoList />} />
+              <Route path="/curso/novo" element={<CursoForm />} />
+              <Route path="/curso/:id" element={<CursoForm />} />              
             </Routes>
           </Box>
 
