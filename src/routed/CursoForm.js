@@ -236,6 +236,7 @@ export default function CursoForm() {
                     value={curso.valor_total}
                     variant="filled"
                     placeholder="Informe o valor total do curso"
+                    required
                     fullWidth
                     onChange={handleInputChange}
                 />
