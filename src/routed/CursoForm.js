@@ -1,10 +1,6 @@
 import React from 'react'
 import TextField from '@mui/material/TextField'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { LocalizationProvider, DesktopDatePicker } from '@mui/x-date-pickers'
-import ptLocale from 'date-fns/locale/pt-BR'
 import { makeStyles } from '@mui/styles'
-import InputMask from 'react-input-mask'
 import MenuItem from '@mui/material/MenuItem'
 import Toolbar from '@mui/material/Toolbar'
 import Button from '@mui/material/Button'
@@ -33,36 +29,17 @@ const useStyles = makeStyles(theme => ({
 
 }))
 
-const unidadesFed = [
-    { sigla: 'DF', nome: 'Distrito Federal' },
-    { sigla: 'ES', nome: 'Espírito Santo' },
-    { sigla: 'GO', nome: 'Goiás' },
-    { sigla: 'MS', nome: 'Mato Grosso do Sul' },
-    { sigla: 'MG', nome: 'Minas Gerais' },
-    { sigla: 'PR', nome: 'Paraná' },
-    { sigla: 'RJ', nome: 'Rio de Janeiro' },
-    { sigla: 'SP', nome: 'São Paulo' }
-]
-
-const turmas = [
-    { sigla: 'ESP10', descricao: '[ESP10] Espanhol iniciante' },
-    { sigla: 'FRA10', descricao: '[FRA10] Francês iniciante' },
-    { sigla: 'ING10', descricao: '[ING10] Inglês iniciante' }
-]
-
 export default function CursoForm() {
 
     const classes = useStyles()
 
     const navigate = useNavigate()
 
-    const params = useParams()//consegue Verifica se na rota tem parametros
+    const params = useParams()
 
     const [state, setState] = React.useState(
         // Lazy initalizer
         () => ({
-            // Campos correspondentes a controles de seleção
-            // precisam ter um valor inicial  
             curso: {
                 sigla: '',
                 descricao: '',
@@ -85,10 +62,6 @@ export default function CursoForm() {
     } = state
 
     React.useEffect(() => {
-
-        //Se houver parameto na rota, estamos editando um registro já existente
-        //portanto precisamos buscar os dados desse registro
-        //para carregar nos campos e editar
         if(params.id){
             fetchData()
         }
@@ -116,11 +89,8 @@ export default function CursoForm() {
     function handleInputChange(event, fieldName = event.target.id) {
         console.log(`fieldName: ${fieldName}, value: ${event?.target?.value}`)
 
-        // Sincroniza o valor do input com a variável de estado
-        const newCurso = {...curso}     // Tira uma cópia do aluno
+        const newCurso = {...curso} 
 
-        // O componente DesktopDatePicker envia newValue em vez de
-        // event; portanto, é necessário tratamento específico para ele
         if(fieldName === 'data_nascimento') newCurso[fieldName] = event
         else newCurso[fieldName] = event.target.value // Atualiza o campo
         
@@ -156,7 +126,6 @@ export default function CursoForm() {
                 isAlertOpen: true,
                 alertSeverity: 'success',
                 alertMessage: 'Dados salvos com sucesso',
-                //isModalProgressOpen: true
             })
         } 
         catch(erro) {
@@ -165,7 +134,6 @@ export default function CursoForm() {
                 isAlertOpen: true,
                 alertSeverity: 'error',
                 alertMessage: 'ERRO: ' + erro.message,
-                //isModalProgressOpen: true
             })
         }
     }

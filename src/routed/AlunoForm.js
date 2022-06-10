@@ -388,7 +388,6 @@ export default function AlunoForm() {
 
             </form>
 
-            <p>{JSON.stringify(aluno)}</p>
         </>
     )
 }

@@ -44,8 +44,6 @@ export default function ProfessorForm() {
     const [state, setState] = React.useState(
         // Lazy initalizer
         () => ({
-            // Campos correspondentes a controles de seleção
-            // precisam ter um valor inicial  
             professor: {
                 nome: '',
                 data_nascimento: '',
@@ -69,10 +67,6 @@ export default function ProfessorForm() {
     } = state
 
     React.useEffect(() => {
-
-        //Se houver parameto na rota, estamos editando um registro já existente
-        //portanto precisamos buscar os dados desse registro
-        //para carregar nos campos e editar
         if(params.id){
             fetchData()
         }
@@ -100,11 +94,8 @@ export default function ProfessorForm() {
     function handleInputChange(event, fieldName = event.target.id) {
         console.log(`fieldName: ${fieldName}, value: ${event?.target?.value}`)
 
-        // Sincroniza o valor do input com a variável de estado
-        const newProfessor = {...professor}     // Tira uma cópia do aluno
+        const newProfessor = {...professor}
 
-        // O componente DesktopDatePicker envia newValue em vez de
-        // event; portanto, é necessário tratamento específico para ele
         if(fieldName === 'data_nascimento') newProfessor[fieldName] = event
         else newProfessor[fieldName] = event.target.value // Atualiza o campo
         
@@ -140,7 +131,6 @@ export default function ProfessorForm() {
                 isAlertOpen: true,
                 alertSeverity: 'success',
                 alertMessage: 'Dados salvos com sucesso',
-                //isModalProgressOpen: true
             })
         } 
         catch(erro) {
@@ -149,7 +139,6 @@ export default function ProfessorForm() {
                 isAlertOpen: true,
                 alertSeverity: 'error',
                 alertMessage: 'ERRO: ' + erro.message,
-                //isModalProgressOpen: true
             })
         }
     }
