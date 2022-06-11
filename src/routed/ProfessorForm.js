@@ -157,10 +157,10 @@ export default function ProfessorForm() {
         setState({...state, isModalProgressOpen: true})
 
         try {
-            //Se params.id existe entao estamos editando, verno put
+            //Se params.id existe entao estamos editando, ver no put
             if(professor.id) await api.put(`professores/${params.id}`, professor)
             //senao, estamos criando um novo
-            else await api.post(`professores`, professor)
+            else await api.post('professores', professor)
             await api.post('professores', professor)
             setState({
                 ...state,
@@ -243,7 +243,7 @@ export default function ProfessorForm() {
                 <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptLocale}>
                     <DesktopDatePicker
                         label="Data de nascimento"
-                        inputFormat="dd/MM/yyyy"
+                        inputFormat="dd/mm/yyyy"
                         value={professor.data_nascimento}
                         onChange={newValue => handleInputChange(newValue, 'data_nascimento')}
                         renderInput={(params) => <TextField
@@ -276,7 +276,7 @@ export default function ProfessorForm() {
                 <TextField 
                     id="formacao" 
                     label="Formação"
-                    value={professor.logradouro}
+                    value={professor.formacao}
                     variant="filled"
                     placeholder="Informe a formação do professor"
                     required
@@ -289,7 +289,7 @@ export default function ProfessorForm() {
                 <TextField 
                     id="valor_hora_aula" 
                     label="Valor da hora a aula"
-                    value={professor.complemento}
+                    value={professor.valor_hora_aula}
                     variant="filled"
                     placeholder="Informe o valor da hora a aula"
                     fullWidth

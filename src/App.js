@@ -46,11 +46,11 @@ function App() {
               <Route path="/aluno/novo" element={<AlunoForm />} />
               <Route path="/aluno/:id" element={<AlunoForm />} />
 
-              <Route path="professor" element={<ProfessorList />} />
+              <Route path="/professor" element={<ProfessorList />} />
               <Route path="/professor/novo" element={<ProfessorForm />} />
               <Route path="/professor/:id" element={<ProfessorForm />} />
 
-              <Route path="cursos" element={<CursosList />} />
+              <Route path="/cursos" element={<CursosList />} />
               <Route path="/curso/novo" element={<CursoForm />} />
               <Route path="/curso/:id" element={<CursoForm />} />
 

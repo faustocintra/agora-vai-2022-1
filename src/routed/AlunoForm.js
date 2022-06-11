@@ -170,7 +170,7 @@ export default function AlunoForm() {
             if(aluno.id) await api.put(`alunos/${params.id}`, aluno)
             //senao, estamos criando um novo
             else await api.post(`alunos`, aluno)
-            await api.post('alunos', aluno)
+            //await api.post('alunos', aluno)
             setState({
                 ...state,
                 isAlertOpen: true,

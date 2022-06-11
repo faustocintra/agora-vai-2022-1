@@ -64,12 +64,11 @@ export default function CursoForm() {
         () => ({
             // Campos correspondentes a controles de seleção
             // precisam ter um valor inicial  
-            curso: { 
-            id:'',    
-            sigla: '', 
+            cursos: { 
+            sigla:'',    
             descricao: '', 
-            duracao_meses: '',
-            carga_horaria:'',
+            duracao_meses: '', 
+            carga_horaria: '',
             valor_total:''},
             alertSeverity: 'success',
             isAlertOpen: false,
@@ -80,7 +79,7 @@ export default function CursoForm() {
         })
     )
     const {
-        curso,
+        cursos,
         alertSeverity,
         isAlertOpen,
         alertMessage,
@@ -105,8 +104,8 @@ export default function CursoForm() {
             const response = await api.get(`cursos/${params.id}`)
             setState({
                 ...state,
-                curso: response.data,
-                pageTitle:'Editando curso id. ' + params.id
+                cursos: response.data,
+                pageTitle:'Editando cursos id. ' + params.id
             })
         }
         catch(erro){
@@ -124,14 +123,14 @@ export default function CursoForm() {
         console.log(`fieldName: ${fieldName}, value: ${event?.target?.value}`)
 
         // Sincroniza o valor do input com a variável de estado
-        const newcurso = {...curso}     // Tira uma cópia do curso
+        const newAluno = {...cursos}     // Tira uma cópia do cursos
 
         // O componente DesktopDatePicker envia newValue em vez de
         // event; portanto, é necessário tratamento específico para ele
-        if(fieldName === 'data_nascimento') newcurso[fieldName] = event
-        else newcurso[fieldName] = event.target.value // Atualiza o campo
+        if(fieldName === 'data_nascimento') newAluno[fieldName] = event
+        else newAluno[fieldName] = event.target.value // Atualiza o campo
         
-        setState({ ...state, curso: newcurso })
+        setState({ ...state, cursos: newAluno })
     }
 
     function handleAlertClose(event, reason) {
@@ -158,10 +157,10 @@ export default function CursoForm() {
 
         try {
             //Se params.id existe entao estamos editando, verno put
-            if(curso.id) await api.put(`cursos/${params.id}`, curso)
+            if(cursos.id) await api.put(`cursos/${params.id}`, cursos)
             //senao, estamos criando um novo
-            else await api.post(`cursos`, curso)
-            await api.post('cursos', curso)
+            else await api.post(`cursos`, cursos)
+            //await api.post('cursos', cursos)
             setState({
                 ...state,
                 isAlertOpen: true,
@@ -182,8 +181,8 @@ export default function CursoForm() {
     }
 
     function isFormModified(){
-        for(let field in curso){
-            if(curso[field] !== '') return true
+        for(let field in cursos){
+            if(cursos[field] !== '') return true
         }
         return false
     }
@@ -229,13 +228,12 @@ export default function CursoForm() {
 
             <form className={classes.form} onSubmit={handleFormSubmit}>
                 
-                <TextField 
+            <TextField 
                     id="sigla" 
-                    label="Sigla do curso"
-                    value={curso.sigla}
+                    label="Sigla do cursos"
+                    value={cursos.sigla}
                     variant="filled"
-                    placeholder="Informe a sigla do(a) curso(a)"
-                    required
+                    placeholder="Informe a sigla do(a) cursos(a)"
                     fullWidth
                     onChange={handleInputChange}
                 />
@@ -243,11 +241,10 @@ export default function CursoForm() {
 
                 <TextField 
                     id="descricao" 
-                    label="Descrição do curso"
-                    value={curso.descricao}
+                    label="Descrição do cursos"
+                    value={cursos.descricao}
                     variant="filled"
-                    placeholder="Informe a descrição do curso"
-                    required
+                    placeholder="Informe a descrição do cursos"
                     fullWidth
                     onChange={handleInputChange}
                 />
@@ -255,11 +252,10 @@ export default function CursoForm() {
 
                 <TextField 
                     id="duracao_meses" 
-                    label="Duração do curso em meses"
-                    value={curso.duracao_meses}
+                    label="Duração do cursos em meses"
+                    value={cursos.duracao_meses}
                     variant="filled"
-                    placeholder="Informe quanto tempo leva o curso em meses"
-                    required
+                    placeholder="Informe quanto tempo leva o cursos em meses"
                     fullWidth
                     onChange={handleInputChange}
                 />
@@ -267,10 +263,9 @@ export default function CursoForm() {
                 <TextField 
                     id="carga_horaria" 
                     label="Quanto tempo em horas"
-                    value={curso.carga_horaria}
+                    value={cursos.carga_horaria}
                     variant="filled"
-                    placeholder="Informe Quanto tempo leva o curso em horas"
-                    required
+                    placeholder="Informe Quanto tempo leva o cursos em horas"
                     fullWidth
                     onChange={handleInputChange}
                 />
@@ -278,9 +273,9 @@ export default function CursoForm() {
                 <TextField 
                     id="valor_total" 
                     label="Valor total"
-                    value={curso.valor_total}
+                    value={cursos.valor_total}
                     variant="filled"
-                    placeholder="Informe o valor total do curso em reais"
+                    placeholder="Informe o valor total do cursos em reais"
                     fullWidth
                     onChange={handleInputChange}
                 />
@@ -301,10 +296,9 @@ export default function CursoForm() {
                         Voltar
                     </Button>
                 </Toolbar>
-
             </form>
 
-            {/*<p>{JSON.stringify(curso)}</p>*/}
+            {/*<p>{JSON.stringify(cursos)}</p>*/}
         </>
     )
 }
