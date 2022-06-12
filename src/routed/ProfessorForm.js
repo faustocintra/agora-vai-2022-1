@@ -34,24 +34,7 @@ const useStyles = makeStyles(theme => ({
 
 }))
 
-const unidadesFed = [
-    { sigla: 'DF', nome: 'Distrito Federal' },
-    { sigla: 'ES', nome: 'Espírito Santo' },
-    { sigla: 'GO', nome: 'Goiás' },
-    { sigla: 'MS', nome: 'Mato Grosso do Sul' },
-    { sigla: 'MG', nome: 'Minas Gerais' },
-    { sigla: 'PR', nome: 'Paraná' },
-    { sigla: 'RJ', nome: 'Rio de Janeiro' },
-    { sigla: 'SP', nome: 'São Paulo' }
-]
-
-const turmas = [
-    { sigla: 'ESP10', descricao: '[ESP10] Espanhol iniciante' },
-    { sigla: 'FRA10', descricao: '[FRA10] Francês iniciante' },
-    { sigla: 'ING10', descricao: '[ING10] Inglês iniciante' }
-]
-
-export default function AlunoForm() {
+export default function ProfessorForm() {
 
     const classes = useStyles()
 
@@ -62,31 +45,24 @@ export default function AlunoForm() {
     const [state, setState] = React.useState(
         // Lazy initalizer
         () => ({
-            aluno: { 
+            professor: { 
                 nome: '',
                 data_nascimento: '',
-                doc_identidade: '',
                 cpf: '',
-                logradouro: '',
-                num_imovel: '',
-                complemento: '',
-                bairro: '',
-                municipio: '',
-                uf: '', 
-                telefone: '',
-                email: '',
-                turma: ''                 
+                formacao: '',
+                valor_hora_aula: '',
+                email: ''            
             },
             alertSeverity: 'success',
             isAlertOpen: false,
             alertMessage: '',
             isModalProgressOpen: false,
-            pageTitle: 'Cadastrar novo aluno',
+            pageTitle: 'Cadastrar novo professor',
             isDialogOpen: false
         })
     )
     const {
-        aluno,
+        professor,
         alertSeverity,
         isAlertOpen,
         alertMessage,
@@ -108,11 +84,11 @@ export default function AlunoForm() {
 
     async function fetchData() {
         try {
-            const response = await api.get(`alunos/${params.id}`)
+            const response = await api.get(`professores/${params.id}`)
             setState({
                 ...state,
-                aluno: response.data,
-                pageTitle: 'Editando aluno id. ' + params.id
+                professor: response.data,
+                pageTitle: 'Editando professor id. ' + params.id
             })
         }
         catch(erro) {
@@ -130,14 +106,14 @@ export default function AlunoForm() {
         console.log(`fieldName: ${fieldName}, value: ${event?.target?.value}`)
 
         // Sincroniza o valor do input com a variável de estado
-        const newAluno = {...aluno}     // Tira uma cópia do aluno
+        const newProfessor = {...professor}     // Tira uma cópia do aluno
 
         // O componente DesktopDatePicker envia newValue em vez de
         // event; portanto, é necessário tratamento específico para ele
-        if(fieldName === 'data_nascimento') newAluno[fieldName] = event
-        else newAluno[fieldName] = event.target.value // Atualiza o campo
+        if(fieldName === 'data_nascimento') newProfessor[fieldName] = event
+        else newProfessor[fieldName] = event.target.value // Atualiza o campo
         
-        setState({ ...state, aluno: newAluno })
+        setState({ ...state, professor: newProfessor})
     }
 
     function handleAlertClose(event, reason) {
@@ -150,7 +126,7 @@ export default function AlunoForm() {
 
         // Se os dados forem salvos com sucesso, volta para a página
         // de listagem
-        if(alertSeverity === 'success') navigate('/aluno')
+        if(alertSeverity === 'success') navigate('/professor')
     }
 
     function handleFormSubmit(event) {
@@ -164,9 +140,9 @@ export default function AlunoForm() {
 
         try {
             // Se aluno.id existe, estamos editando, verbo PUT
-            if(aluno.id) await api.put(`alunos/${params.id}`, aluno)
+            if(professor.id) await api.put(`professores/${params.id}`, professor)
             // Senão, estamos criando um novo, verbo POST
-            else await api.post('alunos', aluno)
+            else await api.post('professores', professor)
 
             setState({
                 ...state,
@@ -186,8 +162,8 @@ export default function AlunoForm() {
     }
 
     function isFormModified() {
-        for(let field in aluno) {
-            if(aluno[field] !== '') return true
+        for(let field in professor) {
+            if(professor[field] !== '') return true
         }
         return false
     }
@@ -199,7 +175,7 @@ export default function AlunoForm() {
         if(isFormModified()) setState({...state, isDialogOpen: true})
 
         // Se não houve modificação, pode voltar diretamente para a listagem
-        else navigate('/aluno')
+        else navigate('/professor')
 
     }
 
@@ -209,7 +185,7 @@ export default function AlunoForm() {
         setState({...state, isDialogOpen: false})
 
         // Se o usuário tiver respondido "sim", volta à listagem
-        if(answer) navigate('/aluno')
+        if(answer) navigate('/professor')
     }
 
     return (
@@ -239,9 +215,9 @@ export default function AlunoForm() {
                 <TextField 
                     id="nome" 
                     label="Nome completo"
-                    value={aluno.nome}
+                    value={professor.nome}
                     variant="filled"
-                    placeholder="Informe o nome completo do(a) aluno(a)"
+                    placeholder="Informe o nome completo do(a) professor(a)"
                     required
                     fullWidth
                     onChange={handleInputChange}
@@ -251,7 +227,7 @@ export default function AlunoForm() {
                     <DesktopDatePicker
                         label="Data de nascimento"
                         inputFormat="dd/MM/yyyy"
-                        value={aluno.data_nascimento}
+                        value={professor.data_nascimento}
                         onChange={newValue => handleInputChange(newValue, 'data_nascimento')}
                         renderInput={(params) => <TextField
                             id="data_nascimento"
@@ -263,20 +239,9 @@ export default function AlunoForm() {
                     />
                 </LocalizationProvider>
 
-                <TextField 
-                    id="doc_identidade" 
-                    label="Documento de identidade"
-                    value={aluno.doc_identidade}
-                    variant="filled"
-                    placeholder="Informe o documento de identidade"
-                    required
-                    fullWidth
-                    onChange={handleInputChange}
-                />
-
                 <InputMask
                     mask="999.999.999-99"
-                    value={aluno.cpf}
+                    value={professor.cpf}
                     onChange={event => handleInputChange(event, 'cpf')}
                 >
                     {
@@ -292,126 +257,37 @@ export default function AlunoForm() {
                 </InputMask>
 
                 <TextField 
-                    id="logradouro" 
-                    label="Logradouro (Rua, Av., etc.)"
-                    value={aluno.logradouro}
+                    id="formacao" 
+                    label="Formção"
+                    value={professor.formacao}
                     variant="filled"
-                    placeholder="Informe o logradouro"
+                    placeholder="Informe a formação"
                     required
                     fullWidth
                     onChange={handleInputChange}
                 />
 
                 <TextField 
-                    id="num_imovel" 
-                    label="Nº"
-                    value={aluno.num_imovel}
+                    id="valor_hora_aula" 
+                    label="Valor horas aulas"
+                    value={professor.valor_hora_aula}
                     variant="filled"
-                    placeholder="Informe o número do imóvel"
+                    placeholder="Informe o valor horas por aula"
                     required
                     fullWidth
                     onChange={handleInputChange}
                 />
-
-                <TextField 
-                    id="complemento" 
-                    label="Complemento"
-                    value={aluno.complemento}
-                    variant="filled"
-                    placeholder="Informe o complemento do imóvel (se houver)"
-                    fullWidth
-                    onChange={handleInputChange}
-                />
-
-                <TextField 
-                    id="bairro" 
-                    label="Bairro"
-                    value={aluno.bairro}
-                    variant="filled"
-                    placeholder="Informe o bairro"
-                    required
-                    fullWidth
-                    onChange={handleInputChange}
-                />
-
-                <TextField 
-                    id="municipio" 
-                    label="Município"
-                    value={aluno.municipio}
-                    variant="filled"
-                    placeholder="Informe o município"
-                    required
-                    fullWidth
-                    onChange={handleInputChange}
-                />
-
-                <TextField 
-                    id="uf" 
-                    label="UF"
-                    value={aluno.uf}
-                    variant="filled"
-                    placeholder="Informe a UF"
-                    required
-                    fullWidth
-                    select
-                    onChange={event => handleInputChange(event, 'uf')}
-                >
-                    {
-                        unidadesFed.map(uf => (
-                            <MenuItem key={uf.sigla} value={uf.sigla}>
-                                {uf.nome}
-                            </MenuItem>
-                        ))
-                    }
-                </TextField>
-
-                <InputMask
-                    mask="(99) 99999-9999"
-                    value={aluno.telefone}
-                    onChange={event => handleInputChange(event, 'telefone')}
-                >
-                    {
-                        () => <TextField 
-                            id="telefone" 
-                            label="Celular"
-                            variant="filled"
-                            placeholder="Informe o celular"
-                            required
-                            fullWidth
-                        />
-                    }
-                </InputMask>
 
                 <TextField 
                     id="email" 
                     label="E-mail"
-                    value={aluno.email}
+                    value={professor.email}
                     variant="filled"
                     placeholder="Informe o e-mail"
                     required
                     fullWidth
                     onChange={handleInputChange}
                 />
-
-                <TextField 
-                    id="turma" 
-                    label="Turma"
-                    value={aluno.turma}
-                    variant="filled"
-                    placeholder="Informe a turma"
-                    required
-                    fullWidth
-                    select
-                    onChange={event => handleInputChange(event, 'turma')}
-                >
-                    {
-                        turmas.map(t => (
-                            <MenuItem key={t.sigla} value={t.sigla}>
-                                {t.descricao}
-                            </MenuItem>
-                        ))
-                    }
-                </TextField>
 
                 <Toolbar className={classes.toolbar}>
                     <Button
