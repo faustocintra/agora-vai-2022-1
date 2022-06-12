@@ -8,6 +8,7 @@ import AlertBar from '../ui/AlertBar'
 import ModalProgress from '../ui/ModalProgress'
 import api from '../api'
 import { useNavigate, useParams } from 'react-router-dom'
+import ConfirmDialog from '../ui/ConfirmDialog'
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -50,7 +51,9 @@ export default function CursoForm() {
             alertSeverity: 'success',
             isAlertOpen: false,
             alertMessage: '',
-            isModalProgressOpen: false
+            isModalProgressOpen: false,
+            pageTitle: 'Cadastrar novo curso',
+            isDialogOpen: false
         })
     )
     const {
@@ -58,10 +61,12 @@ export default function CursoForm() {
         alertSeverity,
         isAlertOpen,
         alertMessage,
-        isModalProgressOpen
+        isModalProgressOpen,
+        pageTitle,
+        isDialogOpen
     } = state
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         if(params.id){
             fetchData()
         }
@@ -73,7 +78,8 @@ export default function CursoForm() {
             const response = await api.get(`cursos/${params.id}`)
             setState({
                 ...state,
-                curso: response.data
+                curso: response.data,
+                pageTitle: 'Editando curso id. ' + params.id
             })
         }
         catch(erro){
@@ -81,7 +87,8 @@ export default function CursoForm() {
                 ...state,
                 alertSeverity: 'error',
                 alertMessage: 'ERRO' + erro.message,
-                isAlertOpen: true
+                isAlertOpen: true,
+                pageTitle: '## ERRO ##'
             })
         }
     }
@@ -120,7 +127,9 @@ export default function CursoForm() {
         setState({...state, isModalProgressOpen: true})
 
         try {
-            await api.post('cursos', curso)
+            if(curso.id) await api.put(`cursos/${params.id}`, curso)
+            else await api.post('cursos', curso)
+
             setState({
                 ...state,
                 isAlertOpen: true,
@@ -138,6 +147,33 @@ export default function CursoForm() {
         }
     }
 
+    function isFormModified() {
+        for(let field in curso) {
+            if(curso[field] !== '') return true
+        }
+        return false
+    }
+
+    function handleVoltarButtonClick() {
+
+        // Se o formulário tiver sido modificado, chama a caixa de diálogo
+        // para perguntar se o usuário realmente quer voltar, perdendo dados
+        if(isFormModified()) setState({...state, isDialogOpen: true})
+
+        // Se não houve modificação, pode voltar diretamente para a listagem
+        else navigate('/curso')
+
+    }
+
+    function handleDialogClose(answer) {
+
+        // Fecha a caixa de diálogo
+        setState({...state, isDialogOpen: false})
+
+        // Se o usuário tiver respondido "sim", volta à listagem
+        if(answer) navigate('/curso')
+    }
+
     return (
         <>
             <AlertBar 
@@ -150,7 +186,15 @@ export default function CursoForm() {
 
             <ModalProgress open={isModalProgressOpen} />
             
-            <h1>Cadastro de cursos</h1>
+            <ConfirmDialog 
+                title="Os dados foram modificados" 
+                open={isDialogOpen}
+                onClose={handleDialogClose}
+            >
+                Deseja realmente descartar as informações não salvas?
+            </ConfirmDialog>
+            
+            <h1>{pageTitle}</h1>
 
             <form className={classes.form} onSubmit={handleFormSubmit}>
                 
