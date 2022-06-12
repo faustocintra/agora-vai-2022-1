@@ -12,6 +12,7 @@ import AlertBar from '../ui/AlertBar'
 import ModalProgress from '../ui/ModalProgress'
 import api from '../api'
 import { useNavigate, useParams } from 'react-router-dom'
+import ConfirmDialog from '../ui/ConfirmDialog'
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -81,7 +82,9 @@ export default function AlunoForm() {
             alertSeverity: 'success',
             isAlertOpen: false,
             alertMessage: '',
-            isModalProgressOpen: false
+            isModalProgressOpen: false,
+            pageTitle: 'Cadastrar novo aluno',
+            isDialogOpen: false
         })
     )
     const {
@@ -89,10 +92,12 @@ export default function AlunoForm() {
         alertSeverity,
         isAlertOpen,
         alertMessage,
-        isModalProgressOpen
+        isModalProgressOpen,
+        pageTitle,
+        isDialogOpen
     } = state
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
 
         //Se houver parameto na rota, estamos editando um registro já existente
         //portanto precisamos buscar os dados desse registro
@@ -108,7 +113,8 @@ export default function AlunoForm() {
             const response = await api.get(`alunos/${params.id}`)
             setState({
                 ...state,
-                aluno: response.data
+                aluno: response.data,
+                pageTitle: 'Editando aluno id. ' + params.id
             })
         }
         catch(erro){
@@ -116,7 +122,8 @@ export default function AlunoForm() {
                 ...state,
                 alertSeverity: 'error',
                 alertMessage: 'ERRO' + erro.message,
-                isAlertOpen: true
+                isAlertOpen: true,
+                pageTitle: '## ERRO ##'
             })
         }
     }
@@ -158,7 +165,9 @@ export default function AlunoForm() {
         setState({...state, isModalProgressOpen: true})
 
         try {
-            await api.post('alunos', aluno)
+            if(aluno.id) await api.put(`alunos/${params.id}`, aluno)
+            else await api.post('alunos', aluno)
+
             setState({
                 ...state,
                 isAlertOpen: true,
@@ -178,6 +187,33 @@ export default function AlunoForm() {
         }
     }
 
+    function isFormModified() {
+        for(let field in aluno) {
+            if(aluno[field] !== '') return true
+        }
+        return false
+    }
+
+    function handleVoltarButtonClick() {
+
+        // Se o formulário tiver sido modificado, chama a caixa de diálogo
+        // para perguntar se o usuário realmente quer voltar, perdendo dados
+        if(isFormModified()) setState({...state, isDialogOpen: true})
+
+        // Se não houve modificação, pode voltar diretamente para a listagem
+        else navigate('/aluno')
+
+    }
+
+    function handleDialogClose(answer) {
+
+        // Fecha a caixa de diálogo
+        setState({...state, isDialogOpen: false})
+
+        // Se o usuário tiver respondido "sim", volta à listagem
+        if(answer) navigate('/aluno')
+    }
+
     return (
         <>
             <AlertBar 
@@ -189,8 +225,16 @@ export default function AlunoForm() {
             </AlertBar>
 
             <ModalProgress open={isModalProgressOpen} />
+
+            <ConfirmDialog 
+                title="Os dados foram modificados" 
+                open={isDialogOpen}
+                onClose={handleDialogClose}
+            >
+                Deseja realmente descartar as informações não salvas?
+            </ConfirmDialog>
             
-            <h1>Cadastro de alunos</h1>
+            <h1>{pageTitle}</h1>
 
             <form className={classes.form} onSubmit={handleFormSubmit}>
                 

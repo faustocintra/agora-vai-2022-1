@@ -12,6 +12,7 @@ import AlertBar from '../ui/AlertBar'
 import ModalProgress from '../ui/ModalProgress'
 import api from '../api'
 import { useNavigate, useParams } from 'react-router-dom'
+import ConfirmDialog from '../ui/ConfirmDialog'
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -55,7 +56,9 @@ export default function ProfessorForm() {
             alertSeverity: 'success',
             isAlertOpen: false,
             alertMessage: '',
-            isModalProgressOpen: false
+            isModalProgressOpen: false,
+            pageTitle: 'Cadastrar novo professor',
+            isDialogOpen: false
         })
     )
     const {
@@ -63,10 +66,12 @@ export default function ProfessorForm() {
         alertSeverity,
         isAlertOpen,
         alertMessage,
-        isModalProgressOpen
+        isModalProgressOpen,
+        pageTitle,
+        isDialogOpen
     } = state
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         if(params.id){
             fetchData()
         }
@@ -78,7 +83,8 @@ export default function ProfessorForm() {
             const response = await api.get(`professores/${params.id}`)
             setState({
                 ...state,
-                professor: response.data
+                professor: response.data,
+                pageTitle: 'Editando professor id. ' + params.id
             })
         }
         catch(erro){
@@ -86,7 +92,8 @@ export default function ProfessorForm() {
                 ...state,
                 alertSeverity: 'error',
                 alertMessage: 'ERRO' + erro.message,
-                isAlertOpen: true
+                isAlertOpen: true,
+                pageTitle: '## ERRO ##'
             })
         }
     }
@@ -125,7 +132,8 @@ export default function ProfessorForm() {
         setState({...state, isModalProgressOpen: true})
 
         try {
-            await api.post('professores', professor)
+            if(professor.id) await api.put(`professores/${params.id}`, professor)
+            else await api.post('professores', professor)
             setState({
                 ...state,
                 isAlertOpen: true,
@@ -143,6 +151,33 @@ export default function ProfessorForm() {
         }
     }
 
+    function isFormModified() {
+        for(let field in professor) {
+            if(professor[field] !== '') return true
+        }
+        return false
+    }
+
+    function handleVoltarButtonClick() {
+
+        // Se o formulário tiver sido modificado, chama a caixa de diálogo
+        // para perguntar se o usuário realmente quer voltar, perdendo dados
+        if(isFormModified()) setState({...state, isDialogOpen: true})
+
+        // Se não houve modificação, pode voltar diretamente para a listagem
+        else navigate('/professor')
+
+    }
+
+    function handleDialogClose(answer) {
+
+        // Fecha a caixa de diálogo
+        setState({...state, isDialogOpen: false})
+
+        // Se o usuário tiver respondido "sim", volta à listagem
+        if(answer) navigate('/professor')
+    }
+
     return (
         <>
             <AlertBar 
@@ -155,7 +190,15 @@ export default function ProfessorForm() {
 
             <ModalProgress open={isModalProgressOpen} />
             
-            <h1>Cadastro de Professores</h1>
+            <ConfirmDialog 
+                title="Os dados foram modificados" 
+                open={isDialogOpen}
+                onClose={handleDialogClose}
+            >
+                Deseja realmente descartar as informações não salvas?
+            </ConfirmDialog>
+            
+            <h1>{pageTitle}</h1>
 
             <form className={classes.form} onSubmit={handleFormSubmit}>
                 
