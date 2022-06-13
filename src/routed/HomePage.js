@@ -50,7 +50,8 @@ const useStyles = makeStyles({
     },
     centralizado: {
         textAlign: 'center'
-    }
+    },
+
 })
 
 export default function HomePage() {
@@ -60,21 +61,24 @@ export default function HomePage() {
 
     return (
         <>
-            <img alt="Obrigado" src={languages} style={{opacity: visible, height: visible ? '398px': '1'}} />
-            <h1>Sobre o Projeto agora vai</h1>
+            <img alt="Obrigado" src={languages} className={classes.imagem} />
+            <div className={classes.centralizado}>
 
+                <h1>Sobre o Projeto agora vai</h1>
 
-            <p>Agora Vai é um projeto front-end desenvolvido pelo Prof. Fausto Cintra juntamente com a turma do 4º semestre matutino de ADS da Fatec Franca.</p>
+                <p>Agora Vai é um projeto front-end desenvolvido pelo Prof. Fausto Cintra juntamente com a turma do 4º semestre matutino de ADS da Fatec Franca.</p>
 
-            <p> Seu objetivo é demonstrar as funcionalidades e possibilidades do React em conjunto com a biblioteca de componentes Material UI, acessando uma API REST remota.</p>
+                <p> Seu objetivo é demonstrar as funcionalidades e possibilidades do React em conjunto com a biblioteca de componentes Material UI, acessando uma API REST remota.</p>
 
-            <p>Clique sobre ícone do menu no canto superior esquerdo para acessar as funcionalidades.</p>
+                <p>Clique sobre ícone do menu no canto superior esquerdo para acessar as funcionalidades.</p>
+            
+                <Button color="secondary">
+                    Enviar
+                </Button>
 
-            <Button
-                color="secondary"
-            >
-                Enviar
-            </Button>
+            </div>
+
+            
         </>
     )
 }
