@@ -58,11 +58,21 @@ export default function HomePage() {
     const classes = useStyles()
 
     //const visible = false   // Transforme isto em uma variável de estado
-    const [state, visible] = false
+    //const [state, visible] = false
+    const [state, setState] = React.useState(
+        () => ({
+            visible: false
+            
+        })
+    )
 
     function trocar(){
-    const visible = !visible 
-    console.log(visible) 
+        if(state.visible){
+            setState({visible: false })
+        }else{
+            setState({visible: true })
+        }
+    console.log(state.visible) 
     }
     return (
         <>
