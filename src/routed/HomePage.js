@@ -61,22 +61,25 @@ export default function HomePage() {
     //const [state, visible] = false
     const [state, setState] = React.useState(
         () => ({
-            visible: false
+            visible: false,
+            modo: 'hidden'
             
         })
     )
 
     function trocar(){
         if(state.visible){
-            setState({visible: false })
+            setState({visible: false, modo:'hidden' })
+            
         }else{
-            setState({visible: true })
+            setState({visible: true, modo: 'visible' })
+            
         }
     console.log(state.visible) 
     }
     return (
         <>
-            <img alt="Obrigado" src={languages} className={classes.imagem} />
+            <img alt="Obrigado" src={languages} className={classes.imagem} style={{visibility: state.modo}}/>
             <div className={classes.centralizado}>
 
                 <h1>Sobre o Projeto agora vai</h1>
