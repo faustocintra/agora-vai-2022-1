@@ -40,6 +40,7 @@
 import React from 'react'
 import { makeStyles } from '@mui/styles'
 import Button from '@mui/material/Button'
+import languages from '../Assets/languages.jpg'
 
 const useStyles = makeStyles({
     imagem: {
@@ -59,7 +60,7 @@ export default function HomePage() {
 
     return (
         <>
-            <img alt="Obrigado" style={{opacity: visible ? '1' : '0', height: visible ? '398px': '0'}} />
+            <img alt="Obrigado" src={languages} style={{opacity: visible, height: visible ? '398px': '1'}} />
             <h1>Sobre o Projeto agora vai</h1>
 
 
