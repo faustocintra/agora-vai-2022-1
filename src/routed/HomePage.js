@@ -57,8 +57,13 @@ const useStyles = makeStyles({
 export default function HomePage() {
     const classes = useStyles()
 
-    const visible = false   // Transforme isto em uma variável de estado
+    //const visible = false   // Transforme isto em uma variável de estado
+    const [state, visible] = false
 
+    function trocar(){
+    const visible = !visible 
+    console.log(visible) 
+    }
     return (
         <>
             <img alt="Obrigado" src={languages} className={classes.imagem} />
@@ -72,7 +77,7 @@ export default function HomePage() {
 
                 <p>Clique sobre ícone do menu no canto superior esquerdo para acessar as funcionalidades.</p>
             
-                <Button color="secondary">
+                <Button color="secondary"  onClick={trocar}>
                     Enviar
                 </Button>
 
