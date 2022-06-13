@@ -56,12 +56,12 @@ export default function CursoList() {
       },
       {
         field: 'duracao_meses',
-        headerName: 'Duracao.Meses',
+        headerName: 'Duracao/Meses',
         width: 150
       },
       {
         field: 'carga_horaria',
-        headerName: 'Carga.Horaria',
+        headerName: 'Carga/Horaria',
         width: 150,
         //flex: 1
       },
@@ -91,7 +91,7 @@ export default function CursoList() {
       },*/
       {
         field: 'valor_total',
-        headerName: 'Valor.total',
+        headerName: 'Valor Total',
         width: 200,
         //flex: 1
       },
