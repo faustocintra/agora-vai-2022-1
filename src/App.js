@@ -11,6 +11,7 @@ import ProfessorList from './routed/ProfessorList';
 import ProfessorForm from './routed/ProfessorForm'
 import CursoList from './routed/CursoList';
 import CursoForm from './routed/CursoForm';
+import HomePage from './routed/HomePage';
 
 
 const customTheme = createTheme ({
@@ -39,6 +40,7 @@ function App() {
 
           <Box component="main" sx={{ margin: '24px' }}>
             <Routes>
+              <Route path="/" element={<HomePage />} />
               <Route path="/aluno" element={<AlunoList />} />
               <Route path="/aluno/novo" element={<AlunoForm />} />
               <Route path="/aluno/:id" element={<AlunoForm />} />
